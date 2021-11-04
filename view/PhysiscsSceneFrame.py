@@ -1,3 +1,4 @@
+from operator import add
 import pygame
 import time
 from model.PhysicsScene import PhysicsScene
@@ -38,24 +39,32 @@ class PhysicsSceneFrame:
 
     def start_scene(self):
         pygame.init()
+        pygame.display.set_caption('Physics Simulation')
         pygame.font.init()
         display = pygame.display.set_mode((self.width, self.height))
 
-        mouse_force = Vector2D(0, 0)
-
-        mouse_pressed = False
+        add_force = True
 
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     quit()
+                # check for key presses
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_SPACE:
+                        add_force = not add_force
+                    if event.key == pygame.K_ESCAPE:
+                        self.scene.remove_all_forces('attraction')
+                # check for mouse events
                 if event.type == pygame.MOUSEBUTTONUP:
-                    mouse_pressed = not mouse_pressed
-                    if mouse_pressed:
-                        mouse_force.set(pygame.mouse.get_pos())
-                    self.scene.add_attraction_force(mouse_force) if mouse_pressed else \
-                        self.scene.remove_force(mouse_force)
+                    if add_force:
+                        new_force = Vector2D(0, 0)
+                        new_force.set(pygame.mouse.get_pos())
+                        self.scene.add_attraction_force(new_force)
+                    else:
+                        self.scene.remove_force(self.scene.closest_force_to_pos(pygame.mouse.get_pos(), 'attraction'))
+                    
 
             display.fill(GRAY)
 

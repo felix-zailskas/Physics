@@ -1,4 +1,5 @@
 import numpy as np
+from typing import Tuple
 
 
 class Vector2D:
@@ -10,7 +11,7 @@ class Vector2D:
     def duplicate(self):
         return Vector2D(self.x, self.y)
 
-    def set(self, vals: (float, float)):
+    def set(self, vals: Tuple[float, float]):
         self.x, self.y = vals
 
     def normalize(self):
@@ -54,6 +55,6 @@ class Vector2D:
         self.x = result[0]
         self.y = result[1]
 
-    def euclidian_dis(self, other):
+    def euclidean_dis(self, other):
         return np.linalg.norm(np.array([self.x, self.y]) - np.array([other.x, other.y]))
 

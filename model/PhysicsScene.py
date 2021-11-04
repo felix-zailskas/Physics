@@ -1,11 +1,12 @@
 from model.PhysicsObject import PhysicsObject
 from model.Vector2D import Vector2D
-
+from typing import List, Tuple
+import numpy as np
 
 class PhysicsScene:
-    objects: [PhysicsObject]
-    global_forces: [Vector2D]
-    attraction_forces: [Vector2D]
+    objects: List[PhysicsObject]
+    global_forces: List[Vector2D]
+    attraction_forces: List[Vector2D]
 
     def __init__(self):
         self.objects = []
@@ -25,6 +26,19 @@ class PhysicsScene:
     def add_attraction_force(self, force: Vector2D):
         self.attraction_forces.append(force)
 
+    def closest_force_to_pos(self, pos: Tuple[float, float], type: str):
+        min_dist = np.inf
+        closest_force = None
+        x, y = pos
+        pos = Vector2D(x, y)
+        if type == 'attraction':
+            for force in self.attraction_forces:
+                dist = pos.euclidean_dis(force)
+                if dist < min_dist:
+                    min_dist = dist
+                    closest_force = force
+        return closest_force
+
     def remove_object(self, obj: PhysicsObject):
         if obj in self.objects:
             self.objects.remove(obj)
@@ -34,6 +48,12 @@ class PhysicsScene:
             self.global_forces.remove(force)
         if force in self.attraction_forces:
             self.attraction_forces.remove(force)
+
+    def remove_all_forces(self, type: str):
+        if type == 'attraction':
+            self.attraction_forces = []
+        if type == 'global':
+            self.global_forces = []
 
     def apply_gravity(self, obj):
         apply_grav = self.gravity.duplicate()
@@ -55,7 +75,7 @@ class PhysicsScene:
             # apply force
             obj.apply_force(to_apply)
 
-    def update(self, boundaries: (int, int) = None, seek_pos: (int, int) = None, seek_check=None):
+    def update(self, boundaries: Tuple[int, int] = None, seek_pos: Tuple[int, int] = None, seek_check=None):
         for obj in self.objects:
             obj.update()
             self.apply_gravity(obj)
