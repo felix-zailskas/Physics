@@ -1,0 +1,13 @@
+# PhysicsObject
+BOUNCE_FACTOR = 0.3
+SEEK_LIMIT = 0.1
+# PhysicsFrame
+FONT_SIZE = 20
+FRAME_RATE = 0.01
+# PhysicsScene
+FRICTION_COEFFICIENT = -0.01
+# Colors
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
+GRAY = (122, 122, 122)
+GREEN = (0, 255, 0)

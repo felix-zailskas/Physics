@@ -1,24 +1,18 @@
 import random
 from model.PhysicsScene import PhysicsScene, PhysicsObject, Vector2D
-from view.PhysiscsSceneFrame import PhysicsSceneFrame
+from view.AttractionSceneFrame import AttractionSceneFrame
+from view.FrictionSceneFrame import FrictionSceneFrame
 
 
 def main():
-    width = 1100
-    height = 1000
-    gravity = Vector2D(0, 0.1)
-
+    width = 800
+    height = 600
+    
     scene = PhysicsScene()
-    scene.set_gravity(gravity)
-
-    for i in range(50):
-        mass = random.uniform(1, 5)
-        scene.add_object(PhysicsObject(random.randint(0, width), height / 2, mass, size=mass * 10))
-
-    frame = PhysicsSceneFrame(scene, width, height)
+    frame = FrictionSceneFrame(scene, width, height)
+    frame.init_scene()
     frame.start_scene()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
-
